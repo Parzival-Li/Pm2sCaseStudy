@@ -1,0 +1,24 @@
+name: Import verified case study snapshot
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and unpack the report snapshot
+        run: |
+          cat bootstrap-assets-*.part > /tmp/pm2s-report.tar.gz
+          echo "e6195dd6c840a9897f07ff1d08ae2c4b89ddcb8c6a40b573cc6d267cd79597e3  /tmp/pm2s-report.tar.gz" | sha256sum --check -
+          tar -xzf /tmp/pm2s-report.tar.gz -C .
+          python3 tools/validate_site.py
+      - name: Commit the complete static website
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm bootstrap-assets-*.part
+          git add docs README.md .gitignore tools/validate_site.py
+          git commit -m "Publish English case study with public excerpt audio"
+          git push origin HEAD:main
