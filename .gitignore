@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+tools/translation_source.json
+tools/translations-*.json
+tools/localize_site.py
+tools/prepare_assets.py
+tools/make_public_copy.py
+tools/*_local.json
+tools/verification-local.json
+private_docs_local/
+tools/*_local.md

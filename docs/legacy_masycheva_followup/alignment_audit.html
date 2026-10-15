@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Masycheva01 alignment and timing-metric audit</title><style>body{max-width:1200px;margin:40px auto;padding:0 24px;background:#f7f9fc;color:#172b43;font:17px/1.8 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}h1,h2{line-height:1.35}h2{margin-top:52px}img{width:100%;height:auto;background:#fff;border:1px solid #dce3eb}table{border-collapse:collapse;width:100%;font-size:15px;background:#fff}th,td{padding:9px 12px;border:1px solid #dce3eb;text-align:left}th{background:#e9eff6}a{color:#1764a3}code{background:#e8edf4;padding:2px 5px}p{margin:18px 0}@media print{body{background:#fff;font-size:12px}h2{break-before:page}img,table{break-inside:avoid}}</style><body><h1>Masycheva01: matching logic, readability, and separate timing metrics</h1>
+<p>Audit date: 2026-10-14. The server was reconnected, actual MUSTER sources inspected, and all three original server XML hashes checked against local copies. Sources were compiled locally and the XML conversion, HMM initial matching, ErrorDetection, Realignment, and evaluation rerun. All six MUSTER values for both models exactly reproduce the previous results. SS data uses the earlier saved-XML reevaluation trace. Instrumentation adds output columns only, without changing matching or scoring decisions.</p>
+<p>Coordinate convention: local is a zero-based quarter-note offset within a measure. local=2 is not 'beat 2': in 4/4 it starts beat 3, while local=2.5 is the second half of beat 3. Earlier wording that called these beat 2/2.5 was inaccurate. duration/quarterLength denotes length; onset denotes start; off/end denotes ending position. The P number in a note ID is an XML part, not a staff number: GT has one part containing two staves.</p>
+<h2>1. 'Official matching' means the current MUSTER program's automatic correspondence</h2>
+<p>These are not manually confirmed reference pairs and need not be the most natural musical interpretation. The project's actual call chain is:</p>
+<pre>&lt;code class="language-sh"&gt;$PFol/MusicXMLToFmt3x ${I1}.xml ${I1}_fmt3x.txt
+
+$PFol/ScorePerfmMatcher ${I1}_hmm.txt ${I2}_spr.txt ${I2}_pre_match.txt 0.01
+$PFol/ErrorDetection ${I1}_fmt3x.txt ${I1}_hmm.txt ${I2}_pre_match.txt ${I2}_err_match.txt
+$PFol/RealignmentMOHMM ${I1}_fmt3x.txt ${I1}_hmm.txt ${I2}_err_match.txt ${I2}_auto_match.txt 0.3
+
+$PFol/ScoreMatchEvaluation_VoicePlus ${I1}_fmt3x.txt ${I2}_fmt3x.txt ${I2}_auto_match.txt ${I2}_err_detail.txt -1 &gt; ${I3}.txt
+
+#$PFol/MusicXMLToQpr 0 ${I1}.xml ${I1}_post_qpr.txt
+#$PFol/MusicXMLToQpr 0 ${I2}.xml ${I2}_post_qpr.txt
+&lt;/code&gt;</pre>
+<p>evaluate_XML_voicePlus.sh</p>
+<p>GT becomes an HMM with chord/ornament states; the prediction becomes SPR with start/end times. The value 0.01 is the matcher's initial secPerQuarterNote parameter, not a per-note matching tolerance. ScorePerfmMatcher uses pitch likelihoods, inter-onset intervals, state transitions, and tempo tracking to find a Viterbi path, allowing substitutions, insertions/repetitions, and skips. It does not simply match each nearest identical pitch.</p>
+<p>The original implementation's core update and backtracking are:</p>
+<pre>&lt;code class="language-cpp"&gt;like_[i]=max+PitchLP[i][observed.pitch];
+vi[i]=am;
+&lt;/code&gt;</pre>
+<p>Backtracking then recovers the state sequence. GetFmt1ID selects a candidate reference ID within the chosen state using pitchDiffProb. Source: ScoreFollower_v170503.hpp, ScoreFollower_v170503.hpp. </p>
+<p>ErrorDetection subsequently performs cluster/note matching. For identical-pitch candidates it favors onsets nearer refT; remaining reference/prediction sequences are paired and classified using pitch-error likelihoods. Relevant source: ErrorDetection_v170503.cpp. RealignmentMOHMM realigns local regions containing multiple error types and attempts to recover miss/extra pairs. Call site: RealignmentMOHMM_v190326.cpp. Here 0.3 controls local realignment-region width; it is not a fixed MusicXML quarter-note-offset threshold applied to every note.</p>
+<p>The final evaluator also removes repeated use of a GT ID: the first predicted correspondence is retained and later ones become extra. The following is original source, not pseudocode:</p>
+<pre>&lt;code class="language-cpp"&gt;	//Detect non-uniquely-aligned notes
+	for(int i=0;i&lt;matchedNoteEst.size();i+=1){
+		for(int n=0;n&lt;matchedNoteTrue.size();n+=1){
+			if(matchedNoteTrue[n].fmt1ID==matchedNoteEst[i].fmt1ID){
+				if(matchedNoteTrue[n].found&lt;0){
+					matchedNoteTrue[n].found=i;
+					matchedNoteEst[i].found=n;
+				}else{
+					matchedNoteEst[i].found=-1;// -&gt; to be an extra note
+				}//endif
+				break;
+			}//endif
+		}//endfor n
+	}//endfor i
+&lt;/code&gt;</pre>
+<p>A reference note whose found count is then &lt;0 is counted as miss: </p>
+<pre>&lt;code class="language-cpp"&gt;	/// Extract missing notes
+	int nMissNote=0;
+	for(int i=matchedNoteTrue.size()-1;i&gt;=0;i-=1){
+		if(matchedNoteTrue[i].found&lt;0){
+ofsDetail&lt;&lt;"MissNote:\tGtID\t"&lt;&lt;matchedNoteTrue[i].fmt1ID&lt;&lt;"\tsitch\t"&lt;&lt;matchedNoteTrue[i].sitch&lt;&lt;"\tonstime\t"&lt;&lt;matchedNoteTrue[i].onstime&lt;&lt;"\n";
+			nMissNote+=1;
+			matchedNoteTrue.erase(matchedNoteTrue.begin()+i);
+		}//endif
+&lt;/code&gt;</pre>
+<p><strong>Complete local facts for the disputed GT26 correspondence.</strong></p>
+<table>
+<thead>
+<tr>
+<th>File / stage</th>
+<th>Note ID</th>
+<th>Pitch</th>
+<th align="right">local</th>
+<th>GT assignment or final classification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GT</td>
+<td>P1-26-19</td>
+<td>E4</td>
+<td align="right">2</td>
+<td>Ultimately miss</td>
+</tr>
+<tr>
+<td>GT</td>
+<td>P1-26-21</td>
+<td>D#4</td>
+<td align="right">2.5</td>
+<td>Assigned to predicted E4</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>P2-29-8</td>
+<td>E4</td>
+<td align="right">2</td>
+<td>pre, err, and auto all assign P1-26-21 with errorInd=0</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>P2-29-10</td>
+<td>D#4</td>
+<td align="right">2.5</td>
+<td>All three stages also assign P1-26-21 with errorInd=0; evaluation counts this repeated ID as extra</td>
+</tr>
+</tbody></table>
+<p>Both notes are present in the prediction. Initial HMM matching already places predicted E4 in a later GT group, and ErrorDetection/Realignment do not correct this local relationship. Evaluation retains E4 first and discards the later D-sharp4 correspondence. There is even an inconsistency where pitches differ but errorInd remains zero; PitchER inherits errorInd without rechecking pitch equality for every final pair.</p>
+<p>Two key original auto_match rows (prediction ID / on / off / sitch / onvel / offvel / channel / matchStatus / GTstime / GtID / errorInd / skipInd):</p>
+<pre>&lt;code class="language-text"&gt;P2-29-8  111   111.5  E4   80 80 3 0 2460 P1-26-21 0 -
+P2-29-10 111.5 112    D#4  80 80 3 0 2460 P1-26-21 0 -
+&lt;/code&gt;</pre>
+<p>GT TPQN is 24. Thus 2460/24 = 102.5, corresponding to GT26 local 2.5. GT E4 is at 2448/24 = 102, local 2.</p>
+<p><a href="E4_alignment_GT26.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="E4_alignment_GT26.webp"/></a></p>
+<p>Red identifies E4 and blue identifies D-sharp4 only, not a particular metric error. This is a concrete disputed automatic correspondence; the earlier miss label alone does not establish that the score deleted E4. Other damaged ascending runs require their own event inspection, so this example does not imply that all misses are false positives.</p>
+<p>338 complete matching/missing-note records for selected GT measures 9, 10, 26, 27, 32, 53, and 60, including both models' IDs, pitches, staves, onsets, raw duration/end, normalized end, and surrounding anchors: Note-level correspondence table. The two matchers are independent. SS first applies DTW to 128-dimensional pitch sets at each onset using summed XOR costs, then compares notes within aligned groups. It does not reuse MUSTER correspondence.ScoreSimilarity.py. </p>
+<h2>2. Stem fidelity does not establish readability</h2>
+<p>The selected quotation concerned the GT32 miss figure; the comment about matching stem directions referred to the earlier GT60 stem figure. These dimensions must be distinguished. In GT60, M2ST stems match GT more closely, yet dense high-note ledger lines under the bass clef are difficult to read. The new model's downward stems bring beams closer to the staff and can look more compact. It is reasonable that the stem score fails to reflect this reading experience. Both predictions still use bass clef on the lower staff; neither reproduces GT's treble-clef optimization.</p>
+<p>The original score simply compares direction strings:</p>
+<pre>&lt;code class="language-python"&gt;            if a.stemDirection != b.stemDirection:
+                errors[ScoreErrors.StemDirection] += 1
+&lt;/code&gt;</pre>
+<p>To demonstrate that identical stem scores can coexist with very different readability, the following illustration changes only the lower-staff clef in M2ST measure 67 to treble. Notes, sounding pitches, durations, stems, voices, and staves are identical. This is an illustrative excerpt copy, not a modified model output or new benchmark result.</p>
+<p><a href="clef_only_GT60.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="clef_only_GT60.webp"/></a></p>
+<p>Ledger lines are substantially reduced, but stem comparison cannot detect the improvement. Even with full=True, Clef measures reference agreement rather than whether the easiest clef was selected. The current stem metric should be called reference stem-direction agreement, not stem appropriateness/readability. GT32 miss concerns sequence content; a more readable layout does not cancel content errors, and miss counts do not rank layouts.</p>
+<h2>3. GT53: offset-only coloring and all 11 records</h2>
+<p>Here 'worst' means the largest single-measure increase in error count from M2ST to the new model: 11 minus 3 = 8. It does not mean GT53 is the new model's sole highest-count measure; GT26 also has 11.</p>
+<p><a href="offset_GT53.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="offset_GT53.webp"/></a></p>
+<p>Only MUSTER OffsetError is colored. Blue denotes M2ST, red the new model, and purple on GT means both models err. Staff or SS-duration errors do not cause additional coloring.</p>
+<p><strong>OffsetER evaluates aligned ending positions, not merely onsets or direct quarterLength equality.</strong> Raw off = on + duration, after tie chains are merged; grace notes may have zero duration. The program removes miss/extra notes and orders predicted arrays by GT correspondence. For each prediction:</p>
+<ol>
+<li>Set its onset to the corresponding GT onset.</li>
+<li>Among all matched predicted notes, find the latest onset L not after its predicted end and the earliest onset R not before that end. The search is not restricted to a voice/staff. For simultaneous candidates, choose the closest pitch.</li>
+<li>If L/R share an onset, take the normalized end directly from L's corresponding GT onset.</li>
+<li>Otherwise apply the original formula using GT and predicted onset differences at L/R and the note's raw duration. The code uses off minus on, not off minus L.on; sign handling and integer truncation follow the original implementation.</li>
+<li>For endings beyond the final predicted onset, use the piece's final available rhythmic scale.</li>
+<li>Count an error when the normalized ending tick differs from the GT ending tick. There is no fixed beat-tolerance test; the denominator is matched GT notes.</li>
+</ol>
+<p>Thus duration, ties, grace notes, neighboring onsets/correspondences, pitch-based simultaneous-anchor selection, and integer ticks can all affect offset. Staff itself does not directly enter the offset test, and staff/offset use different correspondence procedures.</p>
+<p>Core original implementation:</p>
+<pre>&lt;code class="language-cpp"&gt;	for(int n=0;n&lt;matchedNoteTrue.size();n+=1){
+		matchedNoteEstCorrected[n].onstime=matchedNoteTrue[n].onstime;
+
+		if(matchedNoteEst[n].higherMinPos&lt;0){//offstime is larger than the last onstime
+			matchedNoteEstCorrected[n].offstime=matchedNoteEstCorrected[n].onstime+int(((matchedNoteEst[n].offstime-matchedNoteEst[n].onstime)*fmt3x.TPQN*lastScale.num)/(fmt3xEST.TPQN*lastScale.den));
+			continue;
+		}//endif
+
+		if(matchedNoteEst[matchedNoteEst[n].lowerMaxPos].onstime==matchedNoteEst[matchedNoteEst[n].higherMinPos].onstime){
+			matchedNoteEstCorrected[n].offstime=matchedNoteTrue[matchedNoteEst[n].lowerMaxPos].onstime;
+		}else{
+			int durTrue=matchedNoteTrue[matchedNoteEst[n].higherMinPos].onstime-matchedNoteTrue[matchedNoteEst[n].lowerMaxPos].onstime;
+			int durEst=matchedNoteEst[matchedNoteEst[n].higherMinPos].onstime-matchedNoteEst[matchedNoteEst[n].lowerMaxPos].onstime;
+			if(durTrue==0){
+				matchedNoteEstCorrected[n].offstime=matchedNoteTrue[matchedNoteEst[n].higherMinPos].onstime;
+			}else{
+				if(durEst*durTrue&lt;0){durTrue*=-1;}
+				matchedNoteEstCorrected[n].offstime=matchedNoteTrue[matchedNoteEst[n].lowerMaxPos].onstime+(durTrue*(matchedNoteEst[n].offstime-matchedNoteEst[n].onstime))/durEst;
+			}//endif
+		}//endif
+
+	}//endfor n
+
+	double er=0;
+&lt;/code&gt;</pre>
+<p>Final error test:</p>
+<pre>&lt;code class="language-cpp"&gt;if(matchedNoteEstCorrected[n].offstime != matchedNoteTrue[n].offstime){
+    nOffsetError += 1;
+}
+&lt;/code&gt;</pre>
+<p>All durations below use quarter note = 1. 'Normalized duration' is corrected_end minus GT_on from the original C++ calculation, not an independently estimated ratio.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>GT53 local / pitch / staff</th>
+<th>Predicted location</th>
+<th align="right">GT duration</th>
+<th align="right">Raw predicted duration</th>
+<th align="right">Normalized duration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M2ST</td>
+<td>11/6 / G#5 / 1</td>
+<td>59:23/6 / G#5</td>
+<td align="right">1/6</td>
+<td align="right">1/6</td>
+<td align="right">2/3</td>
+</tr>
+<tr>
+<td>M2ST</td>
+<td>2 / E5 / 2</td>
+<td>60:0 / E5</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>M2ST</td>
+<td>3 / B3 / 2</td>
+<td>60:1/2 / B3</td>
+<td align="right">1/6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>0 / G#4 / 2</td>
+<td>57:0 / G#4</td>
+<td align="right">1</td>
+<td align="right">1/2</td>
+<td align="right">2/3</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>0 / B4 / 2</td>
+<td>57:0 / B4</td>
+<td align="right">1</td>
+<td align="right">1/2</td>
+<td align="right">2/3</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>7/6 / D#6 / 1</td>
+<td>57:2 / D#6</td>
+<td align="right">1/6</td>
+<td align="right">1/2</td>
+<td align="right">1/3</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>3/2 / E5 / 2</td>
+<td>57:5/2 / E5</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+<td align="right">1/6</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>3/2 / A4 / 2</td>
+<td>57:5/2 / A4</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+<td align="right">1/6</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>2 / B4 / 2</td>
+<td>58:0 / B4</td>
+<td align="right">1</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>5/2 / F#5 / 1</td>
+<td>58:1/2 / F#5</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+<td align="right">1/3</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>5/2 / D#5 / 2</td>
+<td>58:1/2 / D#5</td>
+<td align="right">1/2</td>
+<td align="right">1/2</td>
+<td align="right">1/3</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>3 / B3 / 2</td>
+<td>58:3/2 / B3</td>
+<td align="right">1/6</td>
+<td align="right">1/2</td>
+<td align="right">1/8</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>19/6 / C#4 / 2</td>
+<td>58:3/2 / C#4</td>
+<td align="right">1/6</td>
+<td align="right">1/2</td>
+<td align="right">1/24</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>10/3 / B3 / 2</td>
+<td>58:8/3 / B3</td>
+<td align="right">1/6</td>
+<td align="right">1/6</td>
+<td align="right">1/12</td>
+</tr>
+</tbody></table>
+<p><strong>Two key examples.</strong></p>
+<ul>
+<li>The new model's E5 at measure 57 local 2.5 corresponds to lower-staff E5 at GT53 local 1.5; both raw durations are 1/2. Its predicted ending coincides with A5 at new model measure 57 local 3, whose GT correspondence is at local 5/3. The normalized end is therefore 5/3 and duration 1/6, but GT should end at local 2: an offset error. A4 behaves similarly. Moving E5 to another staff does not itself directly incur this offset error.</li>
+<li>The new model's E6 at measure 57 local 1.5 has raw duration 1/2 versus GT 1/6, so SS duration marks it wrong. Its ending coincides with the next predicted D-sharp6 onset, whose GT onset is 7/6; normalization recovers duration 1/6, so MUSTER offset does not penalize it.<strong>Raw-duration disagreement and normalized-ending disagreement are separate tests.</strong></li>
+</ul>
+<p>All 14 rows (3 M2ST + 11 new model), including anchors: GT53 offset note table. The new model's 11 offset errors are not another name for the earlier 7 orange staff errors; the staff figure cannot explain offset. M2ST's B3 corresponds to a zero-duration grace note in this matching. SS can choose another B3, so its duration classification need not agree.</p>
+<h2>4. GT9-10: the opening D-sharp5 does have duration and offset errors</h2>
+<p>Previously, showing only shift coloring while discussing duration made 'one record' look like the total of all timing errors. The precise counts are:</p>
+<table>
+<thead>
+<tr>
+<th>GT9-10 only</th>
+<th align="right">M2ST</th>
+<th align="right">new model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MUSTER OnsetError(shift) records</td>
+<td align="right">1</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td>MUSTER OnsetError(scale) records</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>SS NoteDuration</td>
+<td align="right">21</td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td>MUSTER OffsetError</td>
+<td align="right">8</td>
+<td align="right">15</td>
+</tr>
+</tbody></table>
+<p>M2ST has 1 shift and 1 scale record; it cannot be described as having only one onset problem, much less one duration problem. These rows apply different tests and are not summed into a total number of erroneous notes.</p>
+<p>The opening written D in GT10, sounding D-sharp5 under the key signature, is paired as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>ID</th>
+<th align="right">local</th>
+<th align="right">Piece-wide onset</th>
+<th align="right">Raw duration</th>
+<th>Ending / classification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GT</td>
+<td>P1-10-1</td>
+<td align="right">0</td>
+<td align="right">36</td>
+<td align="right">3/2</td>
+<td>Ends at 37.5</td>
+</tr>
+<tr>
+<td>M2ST</td>
+<td>P1-12-8</td>
+<td align="right">2</td>
+<td align="right">35</td>
+<td align="right">1/2</td>
+<td>Normalized end 36.5; SS duration and MUSTER offset wrong; no shift penalty</td>
+</tr>
+<tr>
+<td>new model</td>
+<td>P1-10-5</td>
+<td align="right">2</td>
+<td align="right">38</td>
+<td align="right">1</td>
+<td>Normalized end 37; SS duration, MUSTER offset, and shift wrong</td>
+</tr>
+</tbody></table>
+<p>The M2ST evaluator's duration test is exactly:</p>
+<pre>&lt;code class="language-python"&gt;            if abs(a.duration.quarterLength - b.duration.quarterLength) &gt; 1e-3:
+                errors[ScoreErrors.NoteDuration] += 1
+&lt;/code&gt;</pre>
+<p>The difference between 1.5 and 0.5 is 1, so it is necessarily marked wrong.</p>
+<p>Why is there no M2ST shift error for this note? Shift compares its inter-onset interval from the previous matched note, not its own duration:</p>
+<table>
+<thead>
+<tr>
+<th>Sequence</th>
+<th align="right">Previous matched C-sharp5 onset</th>
+<th align="right">D-sharp5 onset</th>
+<th align="right">Interval</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GT</td>
+<td align="right">35.875</td>
+<td align="right">36</td>
+<td align="right">1/8</td>
+</tr>
+<tr>
+<td>M2ST</td>
+<td align="right">34.875</td>
+<td align="right">35</td>
+<td align="right">1/8</td>
+</tr>
+<tr>
+<td>new model</td>
+<td align="right">37.5</td>
+<td align="right">38</td>
+<td align="right">1/2</td>
+</tr>
+</tbody></table>
+<p>The selected scale here is 1. M2ST's interval is correct, while the new model's is wrong. A uniform one-quarter-note translation of the whole passage does not itself become this shift error. Changing D-sharp5 from a dotted quarter to an eighth affects duration/offset. Original MUSTER onset code:</p>
+<pre>&lt;code class="language-cpp"&gt;	for(int n=1;n&lt;optPath.size();n++){
+		if(optPath[n]!=optPath[n-1]){
+ofsDetail&lt;&lt;"OnsetError(scale):\tGtID\t"&lt;&lt;matchedNoteTrue[n].fmt1ID&lt;&lt;"\tEstID\t"&lt;&lt;matchedNoteEst[n].trxID&lt;&lt;"\tGtSitch\t"&lt;&lt;matchedNoteTrue[n].sitch&lt;&lt;"\tEstSitch\t"&lt;&lt;matchedNoteEst[n].sitch&lt;&lt;"\tGtOnstime\t"&lt;&lt;matchedNoteTrue[n].onstime&lt;&lt;"\tEstOnstime\t"&lt;&lt;matchedNoteEst[n].onstime&lt;&lt;"\n";
+		}//endif
+		nvTrue=(matchedNoteTrue[n].onstime-matchedNoteTrue[n-1].onstime)*fmt3xEST.TPQN;
+		nvEst=(matchedNoteEst[n].onstime-matchedNoteEst[n-1].onstime)*fmt3x.TPQN;
+		if(nvTrue*scales[optPath[n-1]].den!=nvEst*scales[optPath[n-1]].num){
+ofsDetail&lt;&lt;"OnsetError(shift):\tGtID\t"&lt;&lt;matchedNoteTrue[n].fmt1ID&lt;&lt;"\tEstID\t"&lt;&lt;matchedNoteEst[n].trxID&lt;&lt;"\tGtSitch\t"&lt;&lt;matchedNoteTrue[n].sitch&lt;&lt;"\tEstSitch\t"&lt;&lt;matchedNoteEst[n].sitch&lt;&lt;"\tGtOnstime\t"&lt;&lt;matchedNoteTrue[n].onstime&lt;&lt;"\tEstOnstime\t"&lt;&lt;matchedNoteEst[n].onstime&lt;&lt;"\n";
+		}//endif
+&lt;/code&gt;</pre>
+<p>In the duration-only figure, M2ST's D-sharp5 in measure 12 at local 2 is already blue. The GT note is purple because both models have a duration error:</p>
+<p><a href="SS_duration_GT9_10.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="SS_duration_GT9_10.webp"/></a></p>
+<p>Each figure below colors one test only. A note left uncolored in one figure is not necessarily correct on every metric.</p>
+<p><strong>OnsetError(shift) only</strong></p>
+<p><a href="onset_shift_GT9_10.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="onset_shift_GT9_10.webp"/></a></p>
+<p><strong>OnsetError(scale) only</strong></p>
+<p><a href="onset_scale_GT9_10.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="onset_scale_GT9_10.webp"/></a></p>
+<p><strong>MUSTER OffsetError only</strong></p>
+<p><a href="offset_GT9_10.webp" target="_blank"><img alt="Single-metric annotated example" loading="lazy" src="offset_GT9_10.webp"/></a></p>
+<h2>Complete audit evidence</h2>
+<ul>
+<li>338 selected-measure correspondence rows</li>
+<li>All GT53 offset errors and anchors</li>
+<li>197 selected-measure SS errors</li>
+<li>Verification checklist</li>
+</ul>
+<p>The sources directory retains matching/evaluation code, diagnostic code, and both models' complete pre/err/auto correspondence, detail, fmt3x, and numeric traces. Figure counts include only reference measures GT9/10/26/27/32/53/60; prediction panels retain neighboring context when required.</p>
+<p>Examples re-engrave the original events using one renderer. Rendering of a few complex beams or clipped connections is not used to diagnose metric values; quantitative classifications come from original program records. The clef illustration is explicitly a copy and does not modify original predictions.</p>
+</body></html>
