@@ -1,5 +1,5 @@
 (() => {
- function activate(root){for(const frame of root.querySelectorAll('iframe[data-player-src]'))if(!frame.src)frame.src=frame.dataset.playerSrc;}
+ function activate(root){for(const frame of root.querySelectorAll('iframe[data-player-src]'))if(!frame.src){frame.loading='eager';frame.src=frame.dataset.playerSrc;}}
  document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)activate(e.target);},true);
  for(const root of document.querySelectorAll('details[open]'))activate(root);
  for(const frame of document.querySelectorAll('iframe[data-eager]'))frame.src=frame.dataset.playerSrc;
