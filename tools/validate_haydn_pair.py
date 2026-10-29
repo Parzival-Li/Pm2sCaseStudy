@@ -106,7 +106,7 @@ def main():
     directory.feed((SITE / 'Haydn_pair_listen.html').read_text())
     assert len(directory.audio) == 60
     assert len({a['aria-label'] for a in directory.audio}) == 60
-    assert all('controls' in a and a['preload'] == 'none' for a in directory.audio)
+    assert all('controls' in a and a['preload'] == 'metadata' for a in directory.audio)
     report = dict(
         views=12, source_tracks=tracks, audio_files=len(audio),
         synchronized_frame_note_ids_checked=frame_ids_checked,
