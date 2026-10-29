@@ -1,5 +1,5 @@
 {
-  "html_pages": 85,
+  "html_pages": 86,
   "interactive_players": 74,
   "track_occurrences": 271,
   "mp3_clips": 237,
@@ -23,8 +23,11 @@
     "GT39_uniform_rescaling_verified": true,
     "all_excerpt_audio_non_silent": true,
     "navigation_uses_Haydn": true,
-    "internal_source_paths_published": false
+    "internal_source_paths_published": false,
+    "inline_players_without_extra_disclosure": 12,
+    "directly_playable_excerpt_sources": 60
   },
   "publication_method": "SHA-256-verified public archive import; site and Haydn-specific checks passed in GitHub Actions",
-  "report_commit": "333805092111b49f3d678051a95c5b97a88d39e0"
+  "report_commit": "333805092111b49f3d678051a95c5b97a88d39e0",
+  "listening_update": "Twelve inline five-source players, plus sixty ordinary audio controls and direct downloads on Haydn_pair_listen.html"
 }

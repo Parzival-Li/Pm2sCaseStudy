@@ -10,6 +10,8 @@ The site includes a 12-metric pattern overview, four distinct best/worst pieces,
 
 Expand an example, select its source and press **Play**. MP3 audio and AAC fallbacks are served publicly from the same site. No account, SSH connection, local server, soundfont download or external synthesis service is required. Gold indicates playback position; red/blue retain the original metric annotations. The performance-MIDI cursor's alignment to GT is approximate.
 
+For the two-performance study, [open all Haydn excerpt audio and downloads](https://parzival-li.github.io/Pm2sCaseStudy/Haydn_pair_listen.html). Each of the 12 examples has ordinary audio controls for GT XML, both predicted XMLs and both performance MIDIs, plus a synchronized score player with slow playback. The main report also shows its player immediately when a metric is opened.
+
 ## Scope of the public edition
 
 This publication contains the report, rendered score excerpts and synthesized excerpt audio. Complete original XML/MIDI files, detailed raw research logs and internal server paths are retained privately. Numerical findings and their stated limitations remain in the report.

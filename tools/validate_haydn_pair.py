@@ -1,5 +1,6 @@
 """Validate the replacement comparison's public measurements and media."""
 from collections import Counter
+from html.parser import HTMLParser
 import json
 import math
 from pathlib import Path
@@ -10,6 +11,27 @@ from validate_site import Page, PRIVATE_REFERENCE
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'docs'
+
+
+class ListeningLayout(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.details = []
+        self.players = []
+        self.audio = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'details':
+            self.details.append(attrs)
+        if tag == 'iframe' and 'study-player' in attrs.get('class', ''):
+            self.players.append((attrs, list(self.details)))
+        if tag == 'audio':
+            self.audio.append(attrs)
+
+    def handle_endtag(self, tag):
+        if tag == 'details':
+            self.details.pop()
 
 
 def main():
@@ -73,6 +95,18 @@ def main():
         assert 'Haydn_pair.html' in nav and 'Ravel_pair.html' not in nav
     assert 'archived-pair-notice' in (SITE / 'Ravel_pair.html').read_text()
     assert 'new-haydn-pair' in (SITE / 'index.html').read_text()
+    layout = ListeningLayout()
+    layout.feed((SITE / 'Haydn_pair.html').read_text())
+    assert len(layout.players) == 12
+    for frame, ancestors in layout.players:
+        assert len(ancestors) == 1, 'Listening must not require a second disclosure'
+        assert ancestors[0]['id'].startswith('pair-')
+    assert 'haydn-listening-entry' in (SITE / 'Haydn_pair.html').read_text()
+    directory = ListeningLayout()
+    directory.feed((SITE / 'Haydn_pair_listen.html').read_text())
+    assert len(directory.audio) == 60
+    assert len({a['aria-label'] for a in directory.audio}) == 60
+    assert all('controls' in a and a['preload'] == 'none' for a in directory.audio)
     report = dict(
         views=12, source_tracks=tracks, audio_files=len(audio),
         synchronized_frame_note_ids_checked=frame_ids_checked,
@@ -81,6 +115,8 @@ def main():
         all_excerpt_audio_non_silent=True,
         navigation_uses_Haydn=True,
         internal_source_paths_published=False,
+        inline_players_without_extra_disclosure=len(layout.players),
+        directly_playable_excerpt_sources=len(directory.audio),
     )
     (ROOT / 'tools' / 'haydn_checks_local.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps(report, indent=2))
