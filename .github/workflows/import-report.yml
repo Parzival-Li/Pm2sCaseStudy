@@ -11,14 +11,15 @@ jobs:
       - name: Verify and unpack the public report snapshot
         run: |
           cat public-site-*.part > /tmp/pm2s-report.tar.gz
-          echo "29330b565c5ec37542c64583affc63bc130a57d141f91363082a35dcb19b7902  /tmp/pm2s-report.tar.gz" | sha256sum --check -
+          echo "125932b94279a53e4914b63f0087ed4912b7b5e1aaecd96c2fecf1ee4c8f00e0  /tmp/pm2s-report.tar.gz" | sha256sum --check -
           tar -xzf /tmp/pm2s-report.tar.gz -C .
           python3 tools/validate_site.py
+          python3 tools/validate_haydn_pair.py
       - name: Commit the public static website
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm public-site-*.part
-          git add docs README.md .gitignore tools/validate_site.py
-          git commit -m "Publish English case study with public excerpt audio"
+          git add docs README.md .gitignore tools/validate_site.py tools/validate_haydn_pair.py
+          git commit -m "Publish readable Haydn two-performance case study"
           git push origin HEAD:main
