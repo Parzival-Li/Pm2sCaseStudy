@@ -24,5 +24,7 @@
     "all_excerpt_audio_non_silent": true,
     "navigation_uses_Haydn": true,
     "internal_source_paths_published": false
-  }
+  },
+  "publication_method": "SHA-256-verified public archive import; site and Haydn-specific checks passed in GitHub Actions",
+  "report_commit": "333805092111b49f3d678051a95c5b97a88d39e0"
 }
