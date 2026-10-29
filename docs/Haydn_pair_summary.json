@@ -1,0 +1,1532 @@
+{
+  "updated": "2026-10-29",
+  "piece": "Haydn/Keyboard_Sonatas/31-1",
+  "performances": [
+    "Song05M",
+    "Zagalskaia02"
+  ],
+  "selection_rule": "Choose an easier-to-read, substantial-gap same-GT pair; not the numerical maximum.",
+  "original_MeanER_gap_pp": 3.2821799999999994,
+  "complete_GT_control": {
+    "H_low": {
+      "PitchER": 0.595238,
+      "MissRate": 1.38889,
+      "ExtraRate": 2.35756,
+      "OnsetER": 6.5057,
+      "OffsetER": 13.7492,
+      "MeanER": 4.91931,
+      "nMissNote": 21
+    },
+    "H_high": {
+      "PitchER": 0.595238,
+      "MissRate": 2.51323,
+      "ExtraRate": 3.97394,
+      "OnsetER": 14.9932,
+      "OffsetER": 18.9959,
+      "MeanER": 8.21431,
+      "nMissNote": 38
+    }
+  },
+  "input_alignment_counts": {
+    "H_low": {
+      "#notes in GT score": 1512,
+      "#notes in EST score": 1609,
+      "nPitchError": 4,
+      "nMissNote": 10,
+      "nExtraNote": 107
+    },
+    "H_high": {
+      "#notes in GT score": 1512,
+      "#notes in EST score": 1613,
+      "nPitchError": 3,
+      "nMissNote": 6,
+      "nExtraNote": 107
+    }
+  },
+  "MeanER_contributions_pp": {
+    "PitchER": 7.880000000000109e-05,
+    "MissRate": 0.21196400000000004,
+    "ExtraRate": 0.323276,
+    "OnsetER": 1.6975000000000002,
+    "OffsetER": 1.0493399999999997
+  },
+  "uniform_unit_diagnostic": {
+    "H_low": {
+      "duration_error_ratios": [
+        [
+          "3/4",
+          146
+        ],
+        [
+          "1/2",
+          41
+        ],
+        [
+          "2",
+          35
+        ],
+        [
+          "2/3",
+          19
+        ],
+        [
+          "3/2",
+          11
+        ],
+        [
+          "4/3",
+          5
+        ],
+        [
+          "1/3",
+          4
+        ],
+        [
+          "1/4",
+          4
+        ],
+        [
+          "3/5",
+          3
+        ],
+        [
+          "15/14",
+          3
+        ],
+        [
+          "1/5",
+          3
+        ],
+        [
+          "5/6",
+          2
+        ],
+        [
+          "5/3",
+          1
+        ],
+        [
+          "5/2",
+          1
+        ],
+        [
+          "7/4",
+          1
+        ],
+        [
+          "0",
+          1
+        ],
+        [
+          "7/6",
+          1
+        ],
+        [
+          "3",
+          1
+        ],
+        [
+          "7/8",
+          1
+        ],
+        [
+          "1/8",
+          1
+        ],
+        [
+          "2/5",
+          1
+        ],
+        [
+          "6",
+          1
+        ],
+        [
+          "4/5",
+          1
+        ],
+        [
+          "3/8",
+          1
+        ]
+      ],
+      "GT39": {
+        "matched_pairs": 36,
+        "scale": "1",
+        "onset_residuals": {
+          "0": 36
+        },
+        "duration_residuals": {
+          "0": 36
+        }
+      }
+    },
+    "H_high": {
+      "duration_error_ratios": [
+        [
+          "3/2",
+          631
+        ],
+        [
+          "3/4",
+          274
+        ],
+        [
+          "1/2",
+          49
+        ],
+        [
+          "3",
+          32
+        ],
+        [
+          "2",
+          25
+        ],
+        [
+          "2/3",
+          11
+        ],
+        [
+          "1/4",
+          7
+        ],
+        [
+          "3/5",
+          3
+        ],
+        [
+          "15/14",
+          3
+        ],
+        [
+          "4/3",
+          3
+        ],
+        [
+          "5/3",
+          2
+        ],
+        [
+          "9/8",
+          2
+        ],
+        [
+          "4/5",
+          2
+        ],
+        [
+          "6",
+          2
+        ],
+        [
+          "1/5",
+          1
+        ],
+        [
+          "1/3",
+          1
+        ],
+        [
+          "2/5",
+          1
+        ],
+        [
+          "0",
+          1
+        ]
+      ],
+      "GT39": {
+        "matched_pairs": 36,
+        "scale": "3/2",
+        "onset_residuals": {
+          "0": 36
+        },
+        "duration_residuals": {
+          "0": 36
+        }
+      }
+    }
+  },
+  "examples": {
+    "pitch": {
+      "id": "HaydnPair-pitch",
+      "title": "MUSTER PitchER",
+      "kind": "PitchError",
+      "bar": 9,
+      "counts": {
+        "H_low": 1,
+        "H_high": 3
+      },
+      "pred_ranges": {
+        "H_low": [
+          8,
+          8
+        ],
+        "H_high": [
+          9,
+          9
+        ]
+      },
+      "tracks": [
+        {
+          "id": "c2dba3091ebee1",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "9",
+            "9"
+          ],
+          "contextLabels": [
+            "8",
+            "10"
+          ]
+        },
+        {
+          "id": "832d3ce3046892",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "9",
+            "9"
+          ],
+          "contextLabels": [
+            "8",
+            "10"
+          ]
+        },
+        {
+          "id": "91b3dc30aef081",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "10",
+            "10"
+          ],
+          "contextLabels": [
+            "9",
+            "11"
+          ]
+        },
+        {
+          "id": "midi-21b4ed25758902",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "9",
+            "9"
+          ],
+          "contextLabels": [
+            "8",
+            "10"
+          ]
+        },
+        {
+          "id": "midi-6a857a944c47ee",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "9",
+            "9"
+          ],
+          "contextLabels": [
+            "8",
+            "10"
+          ]
+        }
+      ]
+    },
+    "miss": {
+      "id": "HaydnPair-miss",
+      "title": "MUSTER MissRate",
+      "kind": "MissNote",
+      "bar": 32,
+      "counts": {
+        "H_low": 1,
+        "H_high": 4
+      },
+      "pred_ranges": {
+        "H_low": [
+          31,
+          32
+        ],
+        "H_high": [
+          36,
+          37
+        ]
+      },
+      "tracks": [
+        {
+          "id": "e8cbb0fd6bda5b",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "32",
+            "33"
+          ],
+          "contextLabels": [
+            "31",
+            "34"
+          ]
+        },
+        {
+          "id": "8b6916db61f2f4",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "32",
+            "33"
+          ],
+          "contextLabels": [
+            "31",
+            "34"
+          ]
+        },
+        {
+          "id": "c24b89c78ad4b9",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "37",
+            "38"
+          ],
+          "contextLabels": [
+            "36",
+            "39"
+          ]
+        },
+        {
+          "id": "midi-3ad86adfe30147",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "32",
+            "33"
+          ],
+          "contextLabels": [
+            "31",
+            "34"
+          ]
+        },
+        {
+          "id": "midi-0348fd1450c955",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "32",
+            "33"
+          ],
+          "contextLabels": [
+            "31",
+            "34"
+          ]
+        }
+      ]
+    },
+    "extra": {
+      "id": "HaydnPair-extra",
+      "title": "MUSTER ExtraRate",
+      "kind": "ExtraNote",
+      "bar": 22,
+      "counts": {
+        "H_low": 0,
+        "H_high": 4
+      },
+      "pred_ranges": {
+        "H_low": [
+          21,
+          21
+        ],
+        "H_high": [
+          23,
+          25
+        ]
+      },
+      "tracks": [
+        {
+          "id": "563445fa5d3d87",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "22",
+            "22"
+          ],
+          "contextLabels": [
+            "21",
+            "23"
+          ]
+        },
+        {
+          "id": "2fafba3a8f6957",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "22",
+            "22"
+          ],
+          "contextLabels": [
+            "21",
+            "23"
+          ]
+        },
+        {
+          "id": "ff560b7f37448b",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "24",
+            "26"
+          ],
+          "contextLabels": [
+            "23",
+            "27"
+          ]
+        },
+        {
+          "id": "midi-b2ac0f5006458c",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "22",
+            "22"
+          ],
+          "contextLabels": [
+            "21",
+            "23"
+          ]
+        },
+        {
+          "id": "midi-bcfa78e387cf81",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "22",
+            "22"
+          ],
+          "contextLabels": [
+            "21",
+            "23"
+          ]
+        }
+      ]
+    },
+    "onset": {
+      "id": "HaydnPair-onset",
+      "title": "MUSTER Onset: shift records",
+      "kind": "OnsetError(shift)",
+      "bar": 54,
+      "counts": {
+        "H_low": 0,
+        "H_high": 10
+      },
+      "pred_ranges": {
+        "H_low": [
+          53,
+          54
+        ],
+        "H_high": [
+          68,
+          69
+        ]
+      },
+      "tracks": [
+        {
+          "id": "9f77d2126c31b8",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "54",
+            "54"
+          ],
+          "contextLabels": [
+            "53",
+            "55"
+          ]
+        },
+        {
+          "id": "726be3a6205578",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "54",
+            "55"
+          ],
+          "contextLabels": [
+            "53",
+            "56"
+          ]
+        },
+        {
+          "id": "48045bff7876b0",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "69",
+            "70"
+          ],
+          "contextLabels": [
+            "68",
+            "71"
+          ]
+        },
+        {
+          "id": "midi-0d7190c2491eca",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "54",
+            "54"
+          ],
+          "contextLabels": [
+            "53",
+            "55"
+          ]
+        },
+        {
+          "id": "midi-27cfd22a74325e",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "54",
+            "54"
+          ],
+          "contextLabels": [
+            "53",
+            "55"
+          ]
+        }
+      ]
+    },
+    "onset-scale": {
+      "id": "HaydnPair-onset-scale",
+      "title": "MUSTER Onset: scale records",
+      "kind": "OnsetError(scale)",
+      "bar": 5,
+      "counts": {
+        "H_low": 1,
+        "H_high": 4
+      },
+      "pred_ranges": {
+        "H_low": [
+          4,
+          4
+        ],
+        "H_high": [
+          4,
+          5
+        ]
+      },
+      "tracks": [
+        {
+          "id": "1928a2c3039f0e",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "1e0fa1f11c17df",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "a8340516cbfee5",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "6"
+          ],
+          "contextLabels": [
+            "4",
+            "7"
+          ]
+        },
+        {
+          "id": "midi-613b9c7ef97193",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "midi-31268cfc65ae2c",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        }
+      ]
+    },
+    "offset": {
+      "id": "HaydnPair-offset",
+      "title": "MUSTER OffsetER",
+      "kind": "OffsetError",
+      "bar": 53,
+      "counts": {
+        "H_low": 3,
+        "H_high": 12
+      },
+      "pred_ranges": {
+        "H_low": [
+          52,
+          53
+        ],
+        "H_high": [
+          66,
+          68
+        ]
+      },
+      "tracks": [
+        {
+          "id": "90a4ee10da4f67",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "53",
+            "53"
+          ],
+          "contextLabels": [
+            "52",
+            "54"
+          ]
+        },
+        {
+          "id": "5051929e29a651",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "53",
+            "54"
+          ],
+          "contextLabels": [
+            "52",
+            "55"
+          ]
+        },
+        {
+          "id": "864f07ed12b22f",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "67",
+            "69"
+          ],
+          "contextLabels": [
+            "66",
+            "70"
+          ]
+        },
+        {
+          "id": "midi-f375a8682c2c21",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "53",
+            "53"
+          ],
+          "contextLabels": [
+            "52",
+            "54"
+          ]
+        },
+        {
+          "id": "midi-906b919dd7b70f",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "53",
+            "53"
+          ],
+          "contextLabels": [
+            "52",
+            "54"
+          ]
+        }
+      ]
+    },
+    "ss-miss": {
+      "id": "HaydnPair-ss-miss",
+      "title": "SS miss",
+      "kind": "SS_miss",
+      "bar": 5,
+      "counts": {
+        "H_low": 0,
+        "H_high": 4
+      },
+      "pred_ranges": {
+        "H_low": [
+          4,
+          4
+        ],
+        "H_high": [
+          4,
+          5
+        ]
+      },
+      "tracks": [
+        {
+          "id": "16684019749fd9",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "f3db00051b3f1f",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "119ca18e06f8fd",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "6"
+          ],
+          "contextLabels": [
+            "4",
+            "7"
+          ]
+        },
+        {
+          "id": "midi-613b9c7ef97193",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "midi-31268cfc65ae2c",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        }
+      ]
+    },
+    "ss-extra": {
+      "id": "HaydnPair-ss-extra",
+      "title": "SS extra",
+      "kind": "SS_extra",
+      "bar": 5,
+      "counts": {
+        "H_low": 0,
+        "H_high": 4
+      },
+      "pred_ranges": {
+        "H_low": [
+          4,
+          4
+        ],
+        "H_high": [
+          4,
+          5
+        ]
+      },
+      "tracks": [
+        {
+          "id": "a8710a0f8ba6c1",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "f3db00051b3f1f",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "00e09695d666c6",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "6"
+          ],
+          "contextLabels": [
+            "4",
+            "7"
+          ]
+        },
+        {
+          "id": "midi-613b9c7ef97193",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        },
+        {
+          "id": "midi-31268cfc65ae2c",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "5",
+            "5"
+          ],
+          "contextLabels": [
+            "4",
+            "6"
+          ]
+        }
+      ]
+    },
+    "duration": {
+      "id": "HaydnPair-duration",
+      "title": "SS duration",
+      "kind": "SS_duration",
+      "bar": 39,
+      "counts": {
+        "H_low": 0,
+        "H_high": 36
+      },
+      "pred_ranges": {
+        "H_low": [
+          38,
+          38
+        ],
+        "H_high": [
+          44,
+          45
+        ]
+      },
+      "tracks": [
+        {
+          "id": "43860bb5c8f8ec",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "b47e4a41a9967e",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "af949091c1dde8",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "45",
+            "46"
+          ],
+          "contextLabels": [
+            "44",
+            "47"
+          ]
+        },
+        {
+          "id": "midi-ac814c69c4c855",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "midi-8c86c056a078d2",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        }
+      ]
+    },
+    "staff": {
+      "id": "HaydnPair-staff",
+      "title": "SS staff",
+      "kind": "SS_staff",
+      "bar": 24,
+      "counts": {
+        "H_low": 0,
+        "H_high": 3
+      },
+      "pred_ranges": {
+        "H_low": [
+          22,
+          23
+        ],
+        "H_high": [
+          27,
+          28
+        ]
+      },
+      "tracks": [
+        {
+          "id": "132015ffd1c870",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "24",
+            "24"
+          ],
+          "contextLabels": [
+            "23",
+            "25"
+          ]
+        },
+        {
+          "id": "d791a15ab47508",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "23",
+            "24"
+          ],
+          "contextLabels": [
+            "22",
+            "25"
+          ]
+        },
+        {
+          "id": "a660c314eb88c0",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "28",
+            "29"
+          ],
+          "contextLabels": [
+            "27",
+            "30"
+          ]
+        },
+        {
+          "id": "midi-2dd727050f134c",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "24",
+            "24"
+          ],
+          "contextLabels": [
+            "23",
+            "25"
+          ]
+        },
+        {
+          "id": "midi-2e9215df842374",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "24",
+            "24"
+          ],
+          "contextLabels": [
+            "23",
+            "25"
+          ]
+        }
+      ]
+    },
+    "stem": {
+      "id": "HaydnPair-stem",
+      "title": "SS stem",
+      "kind": "SS_stem",
+      "bar": 29,
+      "counts": {
+        "H_low": 26,
+        "H_high": 1
+      },
+      "pred_ranges": {
+        "H_low": [
+          28,
+          29
+        ],
+        "H_high": [
+          33,
+          34
+        ]
+      },
+      "tracks": [
+        {
+          "id": "3747d3de1e4814",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "29",
+            "29"
+          ],
+          "contextLabels": [
+            "28",
+            "30"
+          ]
+        },
+        {
+          "id": "5c792d3802a8e2",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "29",
+            "30"
+          ],
+          "contextLabels": [
+            "28",
+            "31"
+          ]
+        },
+        {
+          "id": "47426408bdb58a",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "34",
+            "35"
+          ],
+          "contextLabels": [
+            "33",
+            "36"
+          ]
+        },
+        {
+          "id": "midi-a7644e467fdeec",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "29",
+            "29"
+          ],
+          "contextLabels": [
+            "28",
+            "30"
+          ]
+        },
+        {
+          "id": "midi-fdce7b651fb917",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "29",
+            "29"
+          ],
+          "contextLabels": [
+            "28",
+            "30"
+          ]
+        }
+      ]
+    },
+    "spell": {
+      "id": "HaydnPair-spell",
+      "title": "SS spell",
+      "kind": "SS_spell",
+      "bar": 39,
+      "counts": {
+        "H_low": 2,
+        "H_high": 2
+      },
+      "pred_ranges": {
+        "H_low": [
+          38,
+          38
+        ],
+        "H_high": [
+          44,
+          45
+        ]
+      },
+      "tracks": [
+        {
+          "id": "4a653647b8af1d",
+          "case": "H_low",
+          "kind": "score",
+          "label": "GT XML",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "19b2deffe78f9b",
+          "case": "H_low",
+          "kind": "score",
+          "label": "M2ST XML - Song05M",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "527434810666e9",
+          "case": "H_high",
+          "kind": "score",
+          "label": "M2ST XML - Zagalskaia02",
+          "coreLabels": [
+            "45",
+            "46"
+          ],
+          "contextLabels": [
+            "44",
+            "47"
+          ]
+        },
+        {
+          "id": "midi-ac814c69c4c855",
+          "case": "H_low",
+          "kind": "performance",
+          "label": "Performance MIDI - Song05M",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        },
+        {
+          "id": "midi-8c86c056a078d2",
+          "case": "H_high",
+          "kind": "performance",
+          "label": "Performance MIDI - Zagalskaia02",
+          "coreLabels": [
+            "39",
+            "39"
+          ],
+          "contextLabels": [
+            "38",
+            "40"
+          ]
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "Song05M": {
+      "GT.musicxml": "ed77aec1517a207b75c6ce24c9cc0b00e36a8d7107a3eacb56d1cf8b4d776ba9",
+      "M2ST.musicxml": "e9e24078ae9898c8e9a8445b7cf6f8b0384164c17eda86a217b80b02953bfa7d",
+      "performance.mid": "719031bf06bae8e5fe7cd278ed8250a3e8ed655a30fd62556ae94a1ac87916fa"
+    },
+    "Zagalskaia02": {
+      "GT.musicxml": "ed77aec1517a207b75c6ce24c9cc0b00e36a8d7107a3eacb56d1cf8b4d776ba9",
+      "M2ST.musicxml": "56a6b3fad2fc11a035f30cfbbdcbd202de7e3912f6597712275bcc9cfd2775b4",
+      "performance.mid": "1044e3f1b65e0c7397360d9b099e727e736edac0be3daf641b2ba44816c5b4d0"
+    }
+  },
+  "measurements": {
+    "Song05M": {
+      "muster": {
+        "PitchER": {
+          "rerun": 0.595238,
+          "original": 0.595238,
+          "equal": true
+        },
+        "MissRate": {
+          "rerun": 1.38889,
+          "original": 1.38889,
+          "equal": true
+        },
+        "ExtraRate": {
+          "rerun": 2.35756,
+          "original": 2.35756,
+          "equal": true
+        },
+        "OnsetER": {
+          "rerun": 6.5057,
+          "original": 6.5057,
+          "equal": true
+        },
+        "OffsetER": {
+          "rerun": 13.7492,
+          "original": 13.7492,
+          "equal": true
+        },
+        "MeanER": {
+          "rerun": 4.91931,
+          "original": 4.91931,
+          "equal": true
+        }
+      },
+      "ss_rerun": {
+        "Clef": 0,
+        "KeySignature": 0,
+        "TimeSignature": 0,
+        "NoteDeletion": 32,
+        "NoteInsertion": 41,
+        "NoteSpelling": 7,
+        "NoteDuration": 290,
+        "StemDirection": 304,
+        "Beams": 603,
+        "Tie": 0,
+        "StaffAssignment": 17,
+        "Voice": 0,
+        "TrillTP": 5,
+        "TrillFP": 4,
+        "TrillTN": 1440,
+        "TrillFN": 14,
+        "StaccatoTP": 38,
+        "StaccatoFP": 12,
+        "StaccatoTN": 1199,
+        "StaccatoFN": 214,
+        "GraceTP": 1,
+        "GraceFP": 1,
+        "GraceTN": 1459,
+        "GraceFN": 2,
+        "TrillPrec": 0.5555555555555556,
+        "TrillRec": 0.2631578947368421,
+        "TrillF1": 0.35714285714285715,
+        "StaccatoPrec": 0.76,
+        "StaccatoRec": 0.15079365079365079,
+        "StaccatoF1": 0.2516556291390728,
+        "GracePrec": 0.5,
+        "GraceRec": 0.3333333333333333,
+        "GraceF1": 0.4,
+        "n_Note": 1512
+      },
+      "ss_original": {
+        "NoteDeletion": 0.02116402116402116,
+        "NoteInsertion": 0.02711640211640211,
+        "NoteDuration": 0.1917989417989418,
+        "StaffAssignment": 0.01124338624338624,
+        "StemDirection": 0.205026455026455,
+        "NoteSpelling": 0.004629629629629629
+      }
+    },
+    "Zagalskaia02": {
+      "muster": {
+        "PitchER": {
+          "rerun": 0.595632,
+          "original": 0.595632,
+          "equal": true
+        },
+        "MissRate": {
+          "rerun": 2.44871,
+          "original": 2.44871,
+          "equal": true
+        },
+        "ExtraRate": {
+          "rerun": 3.97394,
+          "original": 3.97394,
+          "equal": true
+        },
+        "OnsetER": {
+          "rerun": 14.9932,
+          "original": 14.9932,
+          "equal": true
+        },
+        "OffsetER": {
+          "rerun": 18.9959,
+          "original": 18.9959,
+          "equal": true
+        },
+        "MeanER": {
+          "rerun": 8.20149,
+          "original": 8.20149,
+          "equal": true
+        }
+      },
+      "ss_rerun": {
+        "Clef": 0,
+        "KeySignature": 0,
+        "TimeSignature": 0,
+        "NoteDeletion": 50,
+        "NoteInsertion": 62,
+        "NoteSpelling": 5,
+        "NoteDuration": 1054,
+        "StemDirection": 220,
+        "Beams": 708,
+        "Tie": 0,
+        "StaffAssignment": 34,
+        "Voice": 0,
+        "TrillTP": 6,
+        "TrillFP": 3,
+        "TrillTN": 1409,
+        "TrillFN": 10,
+        "StaccatoTP": 28,
+        "StaccatoFP": 3,
+        "StaccatoTN": 1183,
+        "StaccatoFN": 214,
+        "GraceTP": 0,
+        "GraceFP": 1,
+        "GraceTN": 1423,
+        "GraceFN": 4,
+        "TrillPrec": 0.6666666666666666,
+        "TrillRec": 0.375,
+        "TrillF1": 0.4800000000000001,
+        "StaccatoPrec": 0.9032258064516129,
+        "StaccatoRec": 0.11570247933884298,
+        "StaccatoF1": 0.20512820512820515,
+        "GracePrec": 0.0,
+        "GraceRec": 0.0,
+        "GraceF1": null,
+        "n_Note": 1512
+      },
+      "ss_original": {
+        "NoteDeletion": 0.03306878306878307,
+        "NoteInsertion": 0.041005291005291,
+        "NoteDuration": 0.6970899470899471,
+        "StaffAssignment": 0.02248677248677249,
+        "StemDirection": 0.1421957671957672,
+        "NoteSpelling": 0.003306878306878307
+      }
+    }
+  },
+  "new_audio_validation": {
+    "unique_clips": 53,
+    "all_non_silent": true,
+    "minimum_rms": 546.0144401083251
+  }
+}

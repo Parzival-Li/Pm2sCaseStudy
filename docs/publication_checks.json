@@ -1,9 +1,9 @@
 {
-  "html_pages": 72,
-  "interactive_players": 62,
-  "track_occurrences": 211,
-  "mp3_clips": 184,
-  "aac_fallback_clips": 184,
+  "html_pages": 85,
+  "interactive_players": 74,
+  "track_occurrences": 271,
+  "mp3_clips": 237,
+  "aac_fallback_clips": 237,
   "original_files_hash_checked": 0,
   "english_only_presentation": true,
   "publication_scope": "report, rendered score excerpts and synthesized excerpt audio only",
@@ -11,5 +11,18 @@
   "internal_server_paths_published": false,
   "errors": [],
   "missing_local_resources": [],
-  "publication_date": "2026-10-15"
+  "publication_date": "2026-10-15",
+  "updated_date": "2026-10-29",
+  "replacement_two_performance_study": "Haydn Sonata 31-1: Song05M / Zagalskaia02",
+  "replacement_checks": {
+    "views": 12,
+    "source_tracks": 60,
+    "audio_files": 106,
+    "synchronized_frame_note_ids_checked": 4767,
+    "source_hashes_and_reruns_verified": true,
+    "GT39_uniform_rescaling_verified": true,
+    "all_excerpt_audio_non_silent": true,
+    "navigation_uses_Haydn": true,
+    "internal_source_paths_published": false
+  }
 }
